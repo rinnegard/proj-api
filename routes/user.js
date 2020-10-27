@@ -3,13 +3,12 @@ const router = express.Router();
 const auth = require('../models/auth.js');
 const user = require('../models/user.js');
 
-router.get('/',
+router.get('/:id',
     function(req, res, next) {
         auth.verify(req, res, next)
     },
     function(req, res, next) {
-        console.log(req.body);
-        user.getOne(res, req.body.email)
+        user.getOne(res, req.params.id)
 });
 
 module.exports = router;

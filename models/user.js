@@ -1,15 +1,16 @@
 const mongo = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 
 const user = {
-    getOne: function(res, email) {
-        console.log(email);
-        if (!email) {
+    getOne: function(res, id) {
+        console.log(id);
+        if (!id) {
             return res.status(401).json({
                 errors: {
                     status: 401,
                     source: "/insert",
-                    title: "Email or money amount missing",
-                    detail: "Email or money amount missing in request"
+                    title: "Id missing",
+                    detail: "Id missing in request"
                 }
             });
         }
@@ -20,8 +21,9 @@ const user = {
             }
             let db = client.db('proj');
             let users = db.collection('users');
+            let o_id = new ObjectId(id)
             users.findOne({
-                email: email,
+                _id: o_id,
             },{
                 projection: { password: 0}
             }, function(err, doc) {
@@ -38,9 +40,7 @@ const user = {
                 }
 
                 return res.status(201).json({
-                    data: {
-                        doc
-                    }
+                    doc
                 });
             })
         });
