@@ -84,7 +84,9 @@ const auth = {
             let users = db.collection('users');
             users.find({
                 email: email
-            }, function(err, ans) {
+            }).toArray(function(err, ans) {
+                ans = ans[0];
+                console.log(ans);
                 if (err) {
                     return res.status(500).json({
                         errors: {
@@ -146,24 +148,23 @@ const auth = {
             })
         });
     },
-    //
-    // verify: function(req, res, next) {
-    //     const token = req.headers['authorization'].split(" ")[1];
-    //
-    //     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-    //         if (err) {
-    //             return res.status(500).json({
-    //                 errors: {
-    //                     status: 500,
-    //                     title: "Wrong token",
-    //                     detail: "Token is incorrect."
-    //                 }
-    //             });
-    //         }
-    //
-    //         next();
-    //     });
-    // }
+    verify: function(req, res, next) {
+        const token = req.headers['authorization'].split(" ")[1];
+
+        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+            if (err) {
+                return res.status(500).json({
+                    errors: {
+                        status: 500,
+                        title: "Wrong token",
+                        detail: "Token is incorrect."
+                    }
+                });
+            }
+
+            next();
+        });
+    }
 }
 
 module.exports = auth;
