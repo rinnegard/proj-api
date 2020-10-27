@@ -124,7 +124,7 @@ const auth = {
                     }
 
                     if (result) {
-                        const payload = { email: email };
+                        const payload = { email: email, id: ans._id };
                         const token = jwt.sign(payload, secret, { expiresIn: '24h'});
                         return res.json({
                             data: {

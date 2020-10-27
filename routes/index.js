@@ -4,7 +4,9 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
     let routes = {
-        "/": "Welcome"
+        "GET /": "Welcome",
+        "POST /login": "login",
+        "POST /register": "register"
     }
     res.json(routes);
 });
