@@ -5,13 +5,6 @@ const mongo = require('mongodb').MongoClient;
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
-
-mongo.connect('mongodb://localhost:27017', function(error, client){
-    if(error){
-        throw error;
-    }
-});
-
 const auth = {
     register: function(res, email, password) {
         if (!email || !password) {
@@ -37,9 +30,18 @@ const auth = {
                 });
             }
 
-            db.run("INSERT INTO users (email, password) VALUES (?, ?)",
-                email,
-                hash, (err) => {
+
+            mongo.connect('mongodb://localhost:27017', function(error, client){
+                if(error){
+                    throw error;
+                }
+                let db = client.db('proj');
+                let users = db.collection('users');
+                users.createIndex( { email: 1 }, { unique: true } )
+                users.insert({
+                    email: email,
+                    password: hash
+                }, function(err) {
                     if (err) {
                         return res.status(500).json({
                             errors: {
@@ -56,7 +58,9 @@ const auth = {
                             message: "User successfully registered."
                         }
                     });
-                });
+                })
+
+            });
         });
     },
 
@@ -72,8 +76,15 @@ const auth = {
             });
         }
 
-        db.get("SELECT * FROM users WHERE email IS (?)",
-            email, (err, rows) => {
+        mongo.connect('mongodb://localhost:27017', function(error, client){
+            if(error){
+                throw error;
+            }
+            let db = client.db('proj');
+            let users = db.collection('users');
+            users.find({
+                email: email
+            }, function(err, ans) {
                 if (err) {
                     return res.status(500).json({
                         errors: {
@@ -85,18 +96,19 @@ const auth = {
                     });
                 }
 
-                if (rows === undefined) {
+                if (ans === undefined) {
                     return res.status(401).json({
                         errors: {
                             status: 401,
                             source: "/login",
                             title: "User not found",
-                            detail: "User with provided email not found."
+                            detail: "User with provided email not found.",
+                            er: err
                         }
                     });
                 }
 
-                bcrypt.compare(password, rows.password, function(err, result) {
+                bcrypt.compare(password, ans.password, function(err, result) {
                     console.log(result);
                     if (err) {
                         return res.status(500).json({
@@ -131,26 +143,27 @@ const auth = {
                         }
                     });
                 })
-            });
-    },
-
-    verify: function(req, res, next) {
-        const token = req.headers['authorization'].split(" ")[1];
-
-        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
-            if (err) {
-                return res.status(500).json({
-                    errors: {
-                        status: 500,
-                        title: "Wrong token",
-                        detail: "Token is incorrect."
-                    }
-                });
-            }
-
-            next();
+            })
         });
-    }
+    },
+    //
+    // verify: function(req, res, next) {
+    //     const token = req.headers['authorization'].split(" ")[1];
+    //
+    //     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+    //         if (err) {
+    //             return res.status(500).json({
+    //                 errors: {
+    //                     status: 500,
+    //                     title: "Wrong token",
+    //                     detail: "Token is incorrect."
+    //                 }
+    //             });
+    //         }
+    //
+    //         next();
+    //     });
+    // }
 }
 
 module.exports = auth;

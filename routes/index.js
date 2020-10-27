@@ -3,7 +3,10 @@ const auth = require('../models/auth.js');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
-    auth.login(res, req.body.email, req.body.password);
+    let routes = {
+        "/": "Welcome"
+    }
+    res.json(routes);
 });
 
 module.exports = router;

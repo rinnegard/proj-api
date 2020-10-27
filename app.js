@@ -5,6 +5,10 @@ const cors = require('cors');
 const app = express();
 const port = 1338;
 
+const register = require('./routes/register');
+const login = require('./routes/login');
+const index = require('./routes/index');
+
 const corsOptions = {
   exposedHeaders: 'Authorization',
 };
@@ -18,6 +22,10 @@ app.use((req, res, next) => {
     console.log(req.path);
     next();
 });
+
+app.use('/', index);
+app.use('/login', login);
+app.use('/register', register);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
