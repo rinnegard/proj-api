@@ -8,6 +8,7 @@ const port = 1338;
 const register = require('./routes/register');
 const login = require('./routes/login');
 const index = require('./routes/index');
+const transactions = require('./routes/transactions');
 
 const corsOptions = {
   exposedHeaders: 'Authorization',
@@ -24,8 +25,10 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
+app.use('/', transactions);
 app.use('/login', login);
 app.use('/register', register);
+
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
