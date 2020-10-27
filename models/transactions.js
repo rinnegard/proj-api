@@ -1,9 +1,11 @@
 const mongo = require('mongodb').MongoClient;
 
 const transactions = {
-    insertMoney: function(res, email, money) {
+    updateMoney: function(res, email, money) {
         console.log(email);
         console.log(money);
+        money = Number(money)
+
         if (!email || !money) {
             return res.status(401).json({
                 errors: {
@@ -25,10 +27,8 @@ const transactions = {
                 email: email,
             },
             {
-                $set: {
-                    $inc: {
-                        money: money
-                    }
+                $inc: {
+                    money: money
                 }
             }, function(err) {
                 if (err) {

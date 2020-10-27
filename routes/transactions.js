@@ -19,13 +19,13 @@ const transactions = require('../models/transactions.js');
 //         console.log(req.body);
 // });
 
-router.post('/insert',
+router.post('/update',
     // function(req, res, next) {
     //     auth.verify(req, res, next)
     // },
     function(req, res, next) {
         console.log(req.body);
-        transactions.insertMoney(res, req.body.email, req.body.money)
+        transactions.updateMoney(res, req.body.email, req.body.money)
 });
 
 module.exports = router;
