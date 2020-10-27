@@ -19,13 +19,22 @@ const transactions = require('../models/transactions.js');
 //         console.log(req.body);
 // });
 
-router.post('/update',
-    // function(req, res, next) {
-    //     auth.verify(req, res, next)
-    // },
+router.post('/updateMoney',
+    function(req, res, next) {
+        auth.verify(req, res, next)
+    },
     function(req, res, next) {
         console.log(req.body);
         transactions.updateMoney(res, req.body.email, req.body.money)
+});
+
+router.post('/updateItem',
+    function(req, res, next) {
+        auth.verify(req, res, next)
+    },
+    function(req, res, next) {
+        console.log(req.body);
+        transactions.updateItem(res, req.body.email, req.body.item, req.body.amount)
 });
 
 module.exports = router;
