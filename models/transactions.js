@@ -26,7 +26,9 @@ const transactions = {
             },
             {
                 $set: {
-                    money: money
+                    $inc: {
+                        money: money
+                    }
                 }
             }, function(err) {
                 if (err) {
