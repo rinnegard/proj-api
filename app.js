@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 
 app.use('/', index);
 app.use('/', transactions);
-app.use('/', user);
+app.use('/user', user);
 app.use('/login', login);
 app.use('/register', register);
 

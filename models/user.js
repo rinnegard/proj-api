@@ -1,12 +1,9 @@
 const mongo = require('mongodb').MongoClient;
 
 const user = {
-    getOne: function(res, email, money) {
+    getOne: function(res, email) {
         console.log(email);
-        console.log(money);
-        money = Number(money)
-
-        if (!email || !money) {
+        if (!email) {
             return res.status(401).json({
                 errors: {
                     status: 401,
@@ -25,8 +22,9 @@ const user = {
             let users = db.collection('users');
             users.findOne({
                 email: email,
-            }).toArray(function(err, doc) {
-                doc = doc[0];
+            },{
+                projection: { password: 0}
+            }, function(err, doc) {
                 console.log(doc);
                 if (err) {
                     return res.status(500).json({
