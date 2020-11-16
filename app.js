@@ -5,15 +5,47 @@ const cors = require('cors');
 const app = express();
 const port = 1338;
 
+const socketServer = require('http').createServer(app);
+const io = require('socket.io')(socketServer);
+
 const register = require('./routes/register');
 const login = require('./routes/login');
 const index = require('./routes/index');
 const transactions = require('./routes/transactions');
 const user = require('./routes/user');
 
+const stock = require('./models/stock');
+
 const corsOptions = {
   exposedHeaders: 'Authorization',
 };
+
+let gold = {
+    name: "gold",
+    rate: 1.0005,
+    variance: 0.5,
+    start: 10
+}
+
+
+let silver = {
+    name: "silver",
+    rate: 1.0004,
+    variance: 0.6,
+    start: 15
+}
+
+io.on('connection', function () {
+    console.info("Socket connected");
+});
+
+setInterval(function () {
+    io.emit("silver", stock.getStockPrice(silver));
+}, 5000);
+
+setInterval(function () {
+    io.emit("gold", stock.getStockPrice(gold));
+}, 4000);
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json()); // for parsing application/json
