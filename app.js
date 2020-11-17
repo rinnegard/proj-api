@@ -86,12 +86,24 @@ io.on('connection', function(socket) {
 
 setInterval(function () {
     silver.start = stock.getStockPrice(silver);
-    io.emit("silver", silver.start);
+
+    let point = {
+        price: silver.start,
+        time: new Date("2015-03-25T07:00:00Z").getTime()
+    }
+
+    io.emit("silver", point);
 }, 5000);
 
 setInterval(function () {
     gold.start = stock.getStockPrice(gold)
-    io.emit("gold", gold.start);
+
+    let point = {
+        price: gold.start,
+        time: new Date("2015-03-25T07:00:00Z").getTime()
+    }
+
+    io.emit("gold", point);
 }, 4000);
 
 // Start up server
