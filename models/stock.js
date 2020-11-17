@@ -1,6 +1,6 @@
 const stock = {
-    random: function functionName() {
-            return Math.random() > 05 ? 1 : -1;
+    random: function () {
+            return Math.random() > 0.5 ? 1 : -1;
     },
     getStockPrice: function (input) {
         let start = input.start;
