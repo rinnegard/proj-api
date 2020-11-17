@@ -89,7 +89,7 @@ setInterval(function () {
 
     let point = {
         price: silver.start,
-        time: new Date("2015-03-25T07:00:00Z").getTime()
+        time: Date.now()
     }
 
     io.emit("silver", point);
@@ -100,7 +100,7 @@ setInterval(function () {
 
     let point = {
         price: gold.start,
-        time: new Date("2015-03-25T07:00:00Z").getTime()
+        time: Date.now()
     }
 
     io.emit("gold", point);
