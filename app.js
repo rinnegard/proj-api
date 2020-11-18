@@ -66,7 +66,7 @@ let gold = {
     name: "gold",
     rate: 1.0003,
     variance: 0.5,
-    start: 200
+    start: 60
 }
 
 
@@ -74,7 +74,7 @@ let silver = {
     name: "silver",
     rate: 1.0004,
     variance: 0.6,
-    start: 50
+    start: 40
 }
 
 io.on('connection', function(socket) {
@@ -107,5 +107,4 @@ setInterval(function () {
 }, 4000);
 
 // Start up server
-// app.listen(port, () => console.log(`Example API listening on port ${port}!`));
 http.listen(port, () => console.log(`Example API listening on port ${port}!`));
