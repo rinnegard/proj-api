@@ -3,12 +3,12 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 
 const app = express();
-const port = 1338;
+const port = 3001;
 
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-io.origins('*:*');
+io.origins('https://proj.rinnegard.me:443');
 
 const register = require('./routes/register');
 const login = require('./routes/login');
